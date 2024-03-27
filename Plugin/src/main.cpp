@@ -3,8 +3,6 @@
  * This plugin template links against CommonLibSF
  */
 
-#include "DKUtil/Hook.hpp"
-
 class Hooks
 {
 public:
