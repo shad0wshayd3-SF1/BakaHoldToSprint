@@ -26,11 +26,12 @@ private:
 		struct ButtonEventImpl
 		{
 		public:
-			std::byte pad00[0x48];   // 00
-			float     value;         // 48
-			float     heldDownSecs;  // 4C
-			std::byte pad50[0x10];   // 50
+			std::byte pad00[0x48];  // 00
+			float value;            // 48
+			float heldDownSecs;     // 4C
+			std::byte pad50[0x10];  // 50
 		};
+
 		static_assert(sizeof(ButtonEventImpl) == 0x60);
 
 		static bool SprintHandler(ButtonEventImpl* a_event)
@@ -55,12 +56,13 @@ namespace
 {
 	void MessageCallback(SFSE::MessagingInterface::Message* a_msg) noexcept
 	{
-		switch (a_msg->type) {
+		switch (a_msg->type)
+		{
 		case SFSE::MessagingInterface::kPostLoad:
-			{
-				Hooks::Install();
-				break;
-			}
+		{
+			Hooks::Install();
+			break;
+		}
 		default:
 			break;
 		}
