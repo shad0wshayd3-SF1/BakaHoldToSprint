@@ -38,7 +38,7 @@ private:
 			else if (a_event->value == 0.0f && a_event->heldDownSecs > 0.0f)
 			{
 				static REL::Relocation<void**> PlayerCharacter{ REL::ID(865059) };
-				auto flag = REL::stl::adjust_pointer<std::uint8_t>(*PlayerCharacter.get(), 0x110C);
+				auto flag = REL::stl::adjust_pointer<std::uint8_t>(*PlayerCharacter.get(), 0x1114);
 				(*flag) = (*flag) & ~4;
 			}
 
