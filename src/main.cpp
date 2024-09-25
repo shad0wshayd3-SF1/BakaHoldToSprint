@@ -29,6 +29,7 @@ private:
 			std::byte pad50[0x10];  // 50
 		};
 		static_assert(sizeof(ButtonEventImpl) == 0x60);
+
 		// clang-format on
 
 		static bool SprintHandler(ButtonEventImpl* a_event)
