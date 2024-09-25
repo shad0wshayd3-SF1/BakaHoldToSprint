@@ -3,6 +3,7 @@ class Hooks
 public:
 	static void Install()
 	{
+		// PlayerControls::SprintHandler
 		hkSprintHandler::Install();
 	}
 
@@ -18,6 +19,7 @@ private:
 		}
 
 	private:
+		// clang-format off
 		struct ButtonEventImpl
 		{
 		public:
@@ -26,8 +28,8 @@ private:
 			float heldDownSecs;     // 4C
 			std::byte pad50[0x10];  // 50
 		};
-
 		static_assert(sizeof(ButtonEventImpl) == 0x60);
+		// clang-format on
 
 		static bool SprintHandler(ButtonEventImpl* a_event)
 		{
@@ -67,9 +69,6 @@ namespace
 SFSEPluginLoad(const SFSE::LoadInterface* a_sfse)
 {
 	SFSE::Init(a_sfse);
-
-	const auto plugin = SFSE::PluginVersionData::GetSingleton();
-	SFSE::log::info("{} {} loaded", plugin->GetPluginName(), plugin->GetPluginVersion());
 
 	SFSE::AllocTrampoline(1 << 4);
 	SFSE::GetMessagingInterface()->RegisterListener(MessageCallback);
