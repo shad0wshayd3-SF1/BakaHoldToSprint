@@ -1,62 +1,36 @@
 namespace Hooks
 {
 	// PlayerControls::SprintHandler
-	namespace hkSprintHandler
+	class hkSprintHandler :
+		public REX::Singleton<hkSprintHandler>
 	{
-		static bool SprintHandler(RE::ButtonEvent* a_event)
+	private:
+		static void SprintHandler(void* a_this, RE::ButtonEvent* a_event)
 		{
 			if (a_event->value > 0.0f &&
 			    a_event->heldDownSecs == 0.0f)
 			{
-				return true;
+				auto PlayerCharacter = RE::PlayerCharacter::GetSingleton();
+				auto flag = REX::ADJUST_POINTER<std::uint8_t>(PlayerCharacter, 0x1124);
+				*flag &= 4;
 			}
 			else if (a_event->value == 0.0f &&
 			         a_event->heldDownSecs > 0.0f)
 			{
 				auto PlayerCharacter = RE::PlayerCharacter::GetSingleton();
-				auto flag = REL::stl::adjust_pointer<std::uint8_t>(PlayerCharacter, 0x1124);
+				auto flag = REX::ADJUST_POINTER<std::uint8_t>(PlayerCharacter, 0x1124);
 				*flag &= ~4;
 			}
 
-			return false;
+			_Hook0(a_this, a_event);
 		}
 
-		static void Install()
-		{
-			static REL::Relocation target{ REL::ID(129187), 0x0C };
-			target.write_call<5>(SprintHandler);
-		}
-	}
-
-	static void Install()
-	{
-		hkSprintHandler::Install();
-	}
-}
-
-namespace
-{
-	void MessageCallback(SFSE::MessagingInterface::Message* a_msg) noexcept
-	{
-		switch (a_msg->type)
-		{
-		case SFSE::MessagingInterface::kPostLoad:
-		{
-			Hooks::Install();
-			break;
-		}
-		default:
-			break;
-		}
-	}
+		inline static REL::HookVFT _Hook0{ RE::VTABLE::PlayerControls__SprintHandler[0], 0x08, SprintHandler };
+	};
 }
 
 SFSEPluginLoad(const SFSE::LoadInterface* a_sfse)
 {
 	SFSE::Init(a_sfse);
-
-	SFSE::AllocTrampoline(16);
-	SFSE::GetMessagingInterface()->RegisterListener(MessageCallback);
-
 	return true;
 }
